@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+
+    <title>URL Shortener</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>URL Shortener</h1>
+      <!-- POST to /shortUrls endpoint -->
+      <form
+        action="/shortUrls"
+        method="POST"
+        class="my-4 d-flex flex-row align-items-center flex-wrap"
+      >
+        <!-- screen reader only  -->
+        <label for="fullUrl" class="visually-hidden">url</label>
+        <input
+          required
+          placeholder="Url"
+          type="url"
+          name="fullUrl"
+          id="fullUrl"
+          class="form-control me-2 col mr-2"
+        />
+        <button class="btn btn-success" type="submit">Shrink</button>
+      </form>
+
+      <!-- tr:table row  th: table heading/ table header cell td: table data cell -->
+      <table class="table table-stripe table-responsive">
+        <thead>
+          <tr>
+            <th>Full Url</th>
+            <th>Short Url</th>
+            <th>Clicks</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shortUrls.forEach(shortUrl => { %>
+          <tr>
+            <!-- shortUrls is the find array -->
+
+            <td
+              style="word-wrap: break-word; min-width: 160px; max-width: 160px"
+            >
+              <a href="<%= shortUrl.full %>"><%= shortUrl.full %></a>
+            </td>
+            <td><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
+            <td><%= shortUrl.clicks %></td>
+            <td>
+              <form
+                action="/<%= shortUrl.id %>?_method=DELETE"
+                method="POST"
+                class="d-inline ms-8"
+              >
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
