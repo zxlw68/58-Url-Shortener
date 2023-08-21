@@ -3,13 +3,37 @@ const mongoose = require('mongoose')
 const ShortUrl = require('./models/shortUrl')
 const methodOverride = require('method-override')
 const app = express()
+require('dotenv').config()
 
+/*
+// mongoDB local DB
 mongoose.connect('mongodb://127.0.0.1/urlShortener', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   // get rid of deprication warnings
 })
+ */
 
+// mongoDB atlas DB
+try {
+  mongoose.connect(process.env.MONGO_URI)
+} catch (err) {
+  console.err(err)
+}
+
+/* const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI)
+
+    console.log('MangoDB Connected')
+  } catch (error) {
+    console.log(error)
+    process.exit(1) // exit with failure
+  }
+}
+
+connectDB()
+ */
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 // tell express we are using url parameters, to access form input, req.body,fullUrl
